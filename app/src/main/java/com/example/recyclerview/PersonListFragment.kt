@@ -1,6 +1,7 @@
 package com.example.recyclerview
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +12,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
+const val TAG = "MyTag"
 class PersonListFragment: Fragment() {
     private lateinit var personRecyclerView: RecyclerView
+    private var adapter: PersonAdapter? = null
 
     private val myViewModel: MyViewModel by lazy {
         ViewModelProviders.of(this).get(MyViewModel::class.java)
@@ -30,7 +33,16 @@ class PersonListFragment: Fragment() {
         val view =  inflater.inflate(R.layout.fragment_person_list, container, false)
         this.personRecyclerView = view.findViewById(R.id.person_recycler_view)
         this.personRecyclerView.layoutManager = LinearLayoutManager(this.context)
+
+        this.updateUI()
+
         return view
+    }
+
+    private fun updateUI() {
+        val people = this.myViewModel.people
+        this.adapter = PersonAdapter(people)
+        this.personRecyclerView.adapter = adapter
     }
 
     companion object {
@@ -50,6 +62,7 @@ class PersonListFragment: Fragment() {
         : RecyclerView.Adapter<PersonHolder>()
     {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonHolder {
+            Log.v(TAG, "onCreateViewHolder()")
             val view = layoutInflater.inflate(
                 R.layout.list_item_person,
                 parent,

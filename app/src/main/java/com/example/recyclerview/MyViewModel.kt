@@ -7,7 +7,7 @@ class MyViewModel: ViewModel() {
     val people = mutableListOf<Person>()
 
     init {
-       for (i in 0 until 100) {
+       for (i in 0 until 1000) {
            val person = Person()
 
            person.name = "Gary the ${i}ith"
