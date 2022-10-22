@@ -52,10 +52,18 @@ class PersonListFragment: Fragment() {
     }
     private inner class PersonHolder(view: View): RecyclerView.ViewHolder(view)
     {
+        private lateinit var person: Person
         val nameTextView: TextView = this.itemView.findViewById(R.id.name_view)
         val ageTextView: TextView = this.itemView.findViewById(R.id.age_view)
         val coolCheck: CheckBox = this.itemView.findViewById(R.id.super_view)
 
+        fun bind(person: Person)
+        {
+            this.person = person
+            nameTextView.text = person.name
+            ageTextView.text = person.age.toString()
+            coolCheck.isChecked = person.isSuperCool
+        }
     }
 
     private inner class PersonAdapter(var people: List<Person>)
@@ -73,10 +81,8 @@ class PersonListFragment: Fragment() {
 
         override fun onBindViewHolder(holder: PersonHolder, position: Int) {
             val person = this.people[position]
+            holder.bind(person)
 
-            holder.nameTextView.text = person.name
-            holder.ageTextView.text = person.age.toString()
-            holder.coolCheck.isChecked = person.isSuperCool
         }
 
         override fun getItemCount(): Int {
